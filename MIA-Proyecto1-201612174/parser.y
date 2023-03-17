@@ -7,10 +7,28 @@
 #include "list"
 
 #include "obmkdisk.h"
+#include "obmrdisk.h"
 #include "obfdisk.h"
 #include "obmount.h"
+#include "obmkfs.h"
+#include "obtouch.h"
+#include "obrep.h"
+#include "obmkdir.h"
+#include "obcat.h"
+#include "obren.h"
 #include "obrm.h"
+#include "obedit.h"
 #include "obexec.h"
+#include "obcp.h"
+#include "obmv.h"
+#include "obfind.h"
+#include "oblogin.h"
+#include "obmkgrp.h"
+#include "obrmgrp.h"
+#include "obmkusr.h"
+#include "obrmusr.h"
+#include "obchgrp.h"
+#include "obrecovery.h"
 
 using namespace std;
 extern int yylineno; //linea actual donde se encuentra el parser (analisis lexico) lo maneja BISON
@@ -365,7 +383,7 @@ OPTIONMKDIR:
   | OPTIONMKDIR bracketcierra ppath igual cadena { $1->path=$5; $$=$1; }
   | OPTIONMKDIR bracketcierra ppath igual ruta { $1->path=$5; $$=$1; }
 
-  | bracketcierra identificador     { obmkdir *disco = new obmkdir(); disco->p_entrada=$2;  disco->r=true;  $$=disco; }
+  | bracketcierra pr     { obmkdir *disco = new obmkdir(); disco->p_entrada=$2;  disco->r=true;  $$=disco; }
   | bracketcierra ppath igual cadena { obmkdir *disco = new obmkdir(); disco->path=$4; $$=disco; }
   | bracketcierra ppath igual ruta { obmkdir *disco = new obmkdir(); disco->path=$4; $$=disco; }
 ;
@@ -535,11 +553,11 @@ GMKUSR:
     pmkusr OPTIONMKUSR { $2->mostrardatos($2); }
 ;
 OPTIONMKUSR:
-      OPTIONMKUSR bracketcierra pusr igual identificador   { $1->name=$5; $$=$1; }
-    | OPTIONMKUSR bracketcierra pusr igual proot           { $1->name=$5; $$=$1; }
-    | OPTIONMKUSR bracketcierra pusr igual caracterunico   { $1->name=$5; $$=$1; }
-    | OPTIONMKUSR bracketcierra pusr igual codigo          { $1->name=$5; $$=$1; }
-    | OPTIONMKUSR bracketcierra pusr igual cadena          { $1->name=$5; $$=$1; }
+      OPTIONMKUSR bracketcierra puser igual identificador   { $1->name=$5; $$=$1; }
+    | OPTIONMKUSR bracketcierra puser igual proot           { $1->name=$5; $$=$1; }
+    | OPTIONMKUSR bracketcierra puser igual caracterunico   { $1->name=$5; $$=$1; }
+    | OPTIONMKUSR bracketcierra puser igual codigo          { $1->name=$5; $$=$1; }
+    | OPTIONMKUSR bracketcierra puser igual cadena          { $1->name=$5; $$=$1; }
     | OPTIONMKUSR bracketcierra ppwd igual identificador   { $1->password=$5; $$=$1; }
     | OPTIONMKUSR bracketcierra ppwd igual caracterunico   { $1->password=$5; $$=$1; }
     | OPTIONMKUSR bracketcierra ppwd igual codigo          { $1->password=$5; $$=$1; }
@@ -553,11 +571,11 @@ OPTIONMKUSR:
     | OPTIONMKUSR bracketcierra pgrp igual cadena          { $1->grupo=$5; $$=$1; }
     | OPTIONMKUSR bracketcierra pgrp igual proot           { $1->grupo=$5; $$=$1; }
 
-    | bracketcierra pusr igual identificador    { obmkusr *disco = new obmkusr(); disco->name=$4; $$=disco; }
-    | bracketcierra pusr igual caracterunico    { obmkusr *disco = new obmkusr(); disco->name=$4; $$=disco; }
-    | bracketcierra pusr igual codigo           { obmkusr *disco = new obmkusr(); disco->name=$4; $$=disco; }
-    | bracketcierra pusr igual proot            { obmkusr *disco = new obmkusr(); disco->name=$4; $$=disco; }
-    | bracketcierra pusr igual cadena           { obmkusr *disco = new obmkusr(); disco->name=$4; $$=disco; }
+    | bracketcierra puser igual identificador    { obmkusr *disco = new obmkusr(); disco->name=$4; $$=disco; }
+    | bracketcierra puser igual caracterunico    { obmkusr *disco = new obmkusr(); disco->name=$4; $$=disco; }
+    | bracketcierra puser igual codigo           { obmkusr *disco = new obmkusr(); disco->name=$4; $$=disco; }
+    | bracketcierra puser igual proot            { obmkusr *disco = new obmkusr(); disco->name=$4; $$=disco; }
+    | bracketcierra puser igual cadena           { obmkusr *disco = new obmkusr(); disco->name=$4; $$=disco; }
     | bracketcierra ppwd igual identificador    { obmkusr *disco = new obmkusr(); disco->password=$4; $$=disco; }
     | bracketcierra ppwd igual caracterunico    { obmkusr *disco = new obmkusr(); disco->password=$4; $$=disco; }
     | bracketcierra ppwd igual codigo           { obmkusr *disco = new obmkusr(); disco->password=$4; $$=disco; }
@@ -573,33 +591,33 @@ OPTIONMKUSR:
 ;
 
 GRMUSR:
-      prmusr bracketcierra pusr igual identificador    { obrmusr *disco = new obrmusr(); disco->name=$5; disco->mostrardatos(disco); }
-    | prmusr bracketcierra pusr igual caracterunico    { obrmusr *disco = new obrmusr(); disco->name=$5; disco->mostrardatos(disco); }
-    | prmusr bracketcierra pusr igual codigo           { obrmusr *disco = new obrmusr(); disco->name=$5; disco->mostrardatos(disco);}
-    | prmusr bracketcierra pusr igual proot            { obrmusr *disco = new obrmusr(); disco->name=$5; disco->mostrardatos(disco); }
-    | prmusr bracketcierra pusr igual cadena           { obrmusr *disco = new obrmusr(); disco->name=$5; disco->mostrardatos(disco); }
+      prmusr bracketcierra puser igual identificador    { obrmusr *disco = new obrmusr(); disco->name=$5; disco->mostrardatos(disco); }
+    | prmusr bracketcierra puser igual caracterunico    { obrmusr *disco = new obrmusr(); disco->name=$5; disco->mostrardatos(disco); }
+    | prmusr bracketcierra puser igual codigo           { obrmusr *disco = new obrmusr(); disco->name=$5; disco->mostrardatos(disco);}
+    | prmusr bracketcierra puser igual proot            { obrmusr *disco = new obrmusr(); disco->name=$5; disco->mostrardatos(disco); }
+    | prmusr bracketcierra puser igual cadena           { obrmusr *disco = new obrmusr(); disco->name=$5; disco->mostrardatos(disco); }
 ;
 
 GCHGRP:
   pchgrp OPTIONCHGRP { $2->mostrardatos($2); }
 ;
 OPTIONCHGRP:
-    OPTIONCHGRP bracketcierra pusr igual identificador   { $1->name=$5; $$=$1; }
-  | OPTIONCHGRP bracketcierra pusr igual proot           { $1->name=$5; $$=$1; }
-  | OPTIONCHGRP bracketcierra pusr igual caracterunico   { $1->name=$5; $$=$1; }
-  | OPTIONCHGRP bracketcierra pusr igual codigo          { $1->name=$5; $$=$1; }
-  | OPTIONCHGRP bracketcierra pusr igual cadena          { $1->name=$5; $$=$1; }
+    OPTIONCHGRP bracketcierra puser igual identificador   { $1->name=$5; $$=$1; }
+  | OPTIONCHGRP bracketcierra puser igual proot           { $1->name=$5; $$=$1; }
+  | OPTIONCHGRP bracketcierra puser igual caracterunico   { $1->name=$5; $$=$1; }
+  | OPTIONCHGRP bracketcierra puser igual codigo          { $1->name=$5; $$=$1; }
+  | OPTIONCHGRP bracketcierra puser igual cadena          { $1->name=$5; $$=$1; }
   | OPTIONCHGRP bracketcierra pgrp igual identificador   { $1->grupo=$5; $$=$1; }
   | OPTIONCHGRP bracketcierra pgrp igual caracterunico   { $1->grupo=$5; $$=$1; }
   | OPTIONCHGRP bracketcierra pgrp igual codigo          { $1->grupo=$5; $$=$1; }
   | OPTIONCHGRP bracketcierra pgrp igual cadena          { $1->grupo=$5; $$=$1; }
   | OPTIONCHGRP bracketcierra pgrp igual proot           { $1->grupo=$5; $$=$1; }
 
-  | bracketcierra pusr igual identificador    { obchgrp *disco = new obchgrp(); disco->name=$4; $$=disco; }
-  | bracketcierra pusr igual caracterunico    { obchgrp *disco = new obchgrp(); disco->name=$4; $$=disco; }
-  | bracketcierra pusr igual codigo           { obchgrp *disco = new obchgrp(); disco->name=$4; $$=disco; }
-  | bracketcierra pusr igual proot            { obchgrp *disco = new obchgrp(); disco->name=$4; $$=disco; }
-  | bracketcierra pusr igual cadena           { obchgrp *disco = new obchgrp(); disco->name=$4; $$=disco; }
+  | bracketcierra puser igual identificador    { obchgrp *disco = new obchgrp(); disco->name=$4; $$=disco; }
+  | bracketcierra puser igual caracterunico    { obchgrp *disco = new obchgrp(); disco->name=$4; $$=disco; }
+  | bracketcierra puser igual codigo           { obchgrp *disco = new obchgrp(); disco->name=$4; $$=disco; }
+  | bracketcierra puser igual proot            { obchgrp *disco = new obchgrp(); disco->name=$4; $$=disco; }
+  | bracketcierra puser igual cadena           { obchgrp *disco = new obchgrp(); disco->name=$4; $$=disco; }
   | bracketcierra pgrp igual identificador    { obchgrp *disco = new obchgrp(); disco->grupo=$4; $$=disco; }
   | bracketcierra pgrp igual caracterunico    { obchgrp *disco = new obchgrp(); disco->grupo=$4; $$=disco; }
   | bracketcierra pgrp igual codigo           { obchgrp *disco = new obchgrp(); disco->grupo=$4; $$=disco; }

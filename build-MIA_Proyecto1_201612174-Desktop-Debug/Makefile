@@ -53,24 +53,45 @@ OBJECTS_DIR   = ./
 ####### Files
 
 SOURCES       = ../MIA-Proyecto1-201612174/main.cpp \
+		../MIA-Proyecto1-201612174/obedit.cpp \
 		../MIA-Proyecto1-201612174/obexec.cpp \
 		../MIA-Proyecto1-201612174/obfdisk.cpp \
+		../MIA-Proyecto1-201612174/oblogin.cpp \
 		../MIA-Proyecto1-201612174/obmkdisk.cpp \
-		../MIA-Proyecto1-201612174/obmount.cpp \
+		../MIA-Proyecto1-201612174/obmkfs.cpp \
+		../MIA-Proyecto1-201612174/obmkgrp.cpp \
+		../MIA-Proyecto1-201612174/obmkusr.cpp \
+		../MIA-Proyecto1-201612174/obrep.cpp \
 		../MIA-Proyecto1-201612174/obrm.cpp \
+		../MIA-Proyecto1-201612174/obrmgrp.cpp \
+		../MIA-Proyecto1-201612174/obrmusr.cpp \
+		../MIA-Proyecto1-201612174/obtouch.cpp \
+		../MIA-Proyecto1-201612174/obumount.cpp \
 		../MIA-Proyecto1-201612174/parser.cpp \
 		../MIA-Proyecto1-201612174/scanner.cpp \
 		../MIA-Proyecto1-201612174/structs.cpp 
 OBJECTS       = main.o \
+		obedit.o \
 		obexec.o \
 		obfdisk.o \
+		oblogin.o \
 		obmkdisk.o \
-		obmount.o \
+		obmkfs.o \
+		obmkgrp.o \
+		obmkusr.o \
+		obrep.o \
 		obrm.o \
+		obrmgrp.o \
+		obrmusr.o \
+		obtouch.o \
+		obumount.o \
 		parser.o \
 		scanner.o \
 		structs.o
 DIST          = ../MIA-Proyecto1-201612174/CMakeLists.txt \
+		../MIA-Proyecto1-201612174/CMakeLists.txt.user \
+		../MIA-Proyecto1-201612174/MIA_Proyecto1_201612174.pro.user \
+		../MIA-Proyecto1-201612174/MIA_Proyecto1_201612174.pro.user.6dfc39a \
 		../MIA-Proyecto1-201612174/lexico.l \
 		../MIA-Proyecto1-201612174/parser.y \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
@@ -151,20 +172,39 @@ DIST          = ../MIA-Proyecto1-201612174/CMakeLists.txt \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exceptions.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/yacc.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
-		../MIA-Proyecto1-201612174/MIA_Proyecto1_201612174.pro ../MIA-Proyecto1-201612174/obexec.h \
+		../MIA-Proyecto1-201612174/MIA_Proyecto1_201612174.pro ../MIA-Proyecto1-201612174/obedit.h \
+		../MIA-Proyecto1-201612174/obexec.h \
 		../MIA-Proyecto1-201612174/obfdisk.h \
+		../MIA-Proyecto1-201612174/oblogin.h \
 		../MIA-Proyecto1-201612174/obmkdisk.h \
+		../MIA-Proyecto1-201612174/obmkfs.h \
+		../MIA-Proyecto1-201612174/obmkgrp.h \
+		../MIA-Proyecto1-201612174/obmkusr.h \
 		../MIA-Proyecto1-201612174/obmount.h \
+		../MIA-Proyecto1-201612174/obrep.h \
 		../MIA-Proyecto1-201612174/obrm.h \
+		../MIA-Proyecto1-201612174/obrmgrp.h \
+		../MIA-Proyecto1-201612174/obrmusr.h \
+		../MIA-Proyecto1-201612174/obtouch.h \
+		../MIA-Proyecto1-201612174/obumount.h \
 		../MIA-Proyecto1-201612174/parser.h \
 		../MIA-Proyecto1-201612174/scanner.h \
 		../MIA-Proyecto1-201612174/structs.h \
 		../MIA-Proyecto1-201612174/structs.h ../MIA-Proyecto1-201612174/main.cpp \
+		../MIA-Proyecto1-201612174/obedit.cpp \
 		../MIA-Proyecto1-201612174/obexec.cpp \
 		../MIA-Proyecto1-201612174/obfdisk.cpp \
+		../MIA-Proyecto1-201612174/oblogin.cpp \
 		../MIA-Proyecto1-201612174/obmkdisk.cpp \
-		../MIA-Proyecto1-201612174/obmount.cpp \
+		../MIA-Proyecto1-201612174/obmkfs.cpp \
+		../MIA-Proyecto1-201612174/obmkgrp.cpp \
+		../MIA-Proyecto1-201612174/obmkusr.cpp \
+		../MIA-Proyecto1-201612174/obrep.cpp \
 		../MIA-Proyecto1-201612174/obrm.cpp \
+		../MIA-Proyecto1-201612174/obrmgrp.cpp \
+		../MIA-Proyecto1-201612174/obrmusr.cpp \
+		../MIA-Proyecto1-201612174/obtouch.cpp \
+		../MIA-Proyecto1-201612174/obumount.cpp \
 		../MIA-Proyecto1-201612174/parser.cpp \
 		../MIA-Proyecto1-201612174/scanner.cpp \
 		../MIA-Proyecto1-201612174/structs.cpp
@@ -353,8 +393,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../MIA-Proyecto1-201612174/obexec.h ../MIA-Proyecto1-201612174/obfdisk.h ../MIA-Proyecto1-201612174/obmkdisk.h ../MIA-Proyecto1-201612174/obmount.h ../MIA-Proyecto1-201612174/obrm.h ../MIA-Proyecto1-201612174/parser.h ../MIA-Proyecto1-201612174/scanner.h ../MIA-Proyecto1-201612174/structs.h ../MIA-Proyecto1-201612174/structs.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../MIA-Proyecto1-201612174/main.cpp ../MIA-Proyecto1-201612174/obexec.cpp ../MIA-Proyecto1-201612174/obfdisk.cpp ../MIA-Proyecto1-201612174/obmkdisk.cpp ../MIA-Proyecto1-201612174/obmount.cpp ../MIA-Proyecto1-201612174/obrm.cpp ../MIA-Proyecto1-201612174/parser.cpp ../MIA-Proyecto1-201612174/scanner.cpp ../MIA-Proyecto1-201612174/structs.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../MIA-Proyecto1-201612174/obedit.h ../MIA-Proyecto1-201612174/obexec.h ../MIA-Proyecto1-201612174/obfdisk.h ../MIA-Proyecto1-201612174/oblogin.h ../MIA-Proyecto1-201612174/obmkdisk.h ../MIA-Proyecto1-201612174/obmkfs.h ../MIA-Proyecto1-201612174/obmkgrp.h ../MIA-Proyecto1-201612174/obmkusr.h ../MIA-Proyecto1-201612174/obmount.h ../MIA-Proyecto1-201612174/obrep.h ../MIA-Proyecto1-201612174/obrm.h ../MIA-Proyecto1-201612174/obrmgrp.h ../MIA-Proyecto1-201612174/obrmusr.h ../MIA-Proyecto1-201612174/obtouch.h ../MIA-Proyecto1-201612174/obumount.h ../MIA-Proyecto1-201612174/parser.h ../MIA-Proyecto1-201612174/scanner.h ../MIA-Proyecto1-201612174/structs.h ../MIA-Proyecto1-201612174/structs.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../MIA-Proyecto1-201612174/main.cpp ../MIA-Proyecto1-201612174/obedit.cpp ../MIA-Proyecto1-201612174/obexec.cpp ../MIA-Proyecto1-201612174/obfdisk.cpp ../MIA-Proyecto1-201612174/oblogin.cpp ../MIA-Proyecto1-201612174/obmkdisk.cpp ../MIA-Proyecto1-201612174/obmkfs.cpp ../MIA-Proyecto1-201612174/obmkgrp.cpp ../MIA-Proyecto1-201612174/obmkusr.cpp ../MIA-Proyecto1-201612174/obrep.cpp ../MIA-Proyecto1-201612174/obrm.cpp ../MIA-Proyecto1-201612174/obrmgrp.cpp ../MIA-Proyecto1-201612174/obrmusr.cpp ../MIA-Proyecto1-201612174/obtouch.cpp ../MIA-Proyecto1-201612174/obumount.cpp ../MIA-Proyecto1-201612174/parser.cpp ../MIA-Proyecto1-201612174/scanner.cpp ../MIA-Proyecto1-201612174/structs.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -407,6 +447,12 @@ main.o: ../MIA-Proyecto1-201612174/main.cpp ../MIA-Proyecto1-201612174/parser.h 
 		../MIA-Proyecto1-201612174/structs.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../MIA-Proyecto1-201612174/main.cpp
 
+obedit.o: ../MIA-Proyecto1-201612174/obedit.cpp ../MIA-Proyecto1-201612174/obedit.h \
+		../MIA-Proyecto1-201612174/structs.h \
+		../MIA-Proyecto1-201612174/obrm.h \
+		../MIA-Proyecto1-201612174/obtouch.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obedit.o ../MIA-Proyecto1-201612174/obedit.cpp
+
 obexec.o: ../MIA-Proyecto1-201612174/obexec.cpp ../MIA-Proyecto1-201612174/obexec.h \
 		../MIA-Proyecto1-201612174/structs.h \
 		../MIA-Proyecto1-201612174/parser.h \
@@ -417,17 +463,67 @@ obfdisk.o: ../MIA-Proyecto1-201612174/obfdisk.cpp ../MIA-Proyecto1-201612174/obf
 		../MIA-Proyecto1-201612174/structs.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obfdisk.o ../MIA-Proyecto1-201612174/obfdisk.cpp
 
+oblogin.o: ../MIA-Proyecto1-201612174/oblogin.cpp ../MIA-Proyecto1-201612174/oblogin.h \
+		../MIA-Proyecto1-201612174/obrm.h \
+		../MIA-Proyecto1-201612174/structs.h \
+		../MIA-Proyecto1-201612174/obtouch.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o oblogin.o ../MIA-Proyecto1-201612174/oblogin.cpp
+
 obmkdisk.o: ../MIA-Proyecto1-201612174/obmkdisk.cpp ../MIA-Proyecto1-201612174/obmkdisk.h \
 		../MIA-Proyecto1-201612174/structs.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obmkdisk.o ../MIA-Proyecto1-201612174/obmkdisk.cpp
 
-obmount.o: ../MIA-Proyecto1-201612174/obmount.cpp ../MIA-Proyecto1-201612174/obmount.h \
-		../MIA-Proyecto1-201612174/structs.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obmount.o ../MIA-Proyecto1-201612174/obmount.cpp
+obmkfs.o: ../MIA-Proyecto1-201612174/obmkfs.cpp ../MIA-Proyecto1-201612174/obmkfs.h \
+		../MIA-Proyecto1-201612174/structs.h \
+		../MIA-Proyecto1-201612174/obmount.cpp \
+		../MIA-Proyecto1-201612174/obmount.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obmkfs.o ../MIA-Proyecto1-201612174/obmkfs.cpp
+
+obmkgrp.o: ../MIA-Proyecto1-201612174/obmkgrp.cpp ../MIA-Proyecto1-201612174/obmkgrp.h \
+		../MIA-Proyecto1-201612174/structs.h \
+		../MIA-Proyecto1-201612174/obrm.h \
+		../MIA-Proyecto1-201612174/obtouch.h \
+		../MIA-Proyecto1-201612174/obedit.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obmkgrp.o ../MIA-Proyecto1-201612174/obmkgrp.cpp
+
+obmkusr.o: ../MIA-Proyecto1-201612174/obmkusr.cpp ../MIA-Proyecto1-201612174/obmkusr.h \
+		../MIA-Proyecto1-201612174/structs.h \
+		../MIA-Proyecto1-201612174/obrm.h \
+		../MIA-Proyecto1-201612174/obtouch.h \
+		../MIA-Proyecto1-201612174/obedit.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obmkusr.o ../MIA-Proyecto1-201612174/obmkusr.cpp
+
+obrep.o: ../MIA-Proyecto1-201612174/obrep.cpp ../MIA-Proyecto1-201612174/obrep.h \
+		../MIA-Proyecto1-201612174/structs.h \
+		../MIA-Proyecto1-201612174/obtouch.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obrep.o ../MIA-Proyecto1-201612174/obrep.cpp
 
 obrm.o: ../MIA-Proyecto1-201612174/obrm.cpp ../MIA-Proyecto1-201612174/obrm.h \
 		../MIA-Proyecto1-201612174/structs.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obrm.o ../MIA-Proyecto1-201612174/obrm.cpp
+
+obrmgrp.o: ../MIA-Proyecto1-201612174/obrmgrp.cpp ../MIA-Proyecto1-201612174/obrmgrp.h \
+		../MIA-Proyecto1-201612174/structs.h \
+		../MIA-Proyecto1-201612174/obrm.h \
+		../MIA-Proyecto1-201612174/obtouch.h \
+		../MIA-Proyecto1-201612174/obedit.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obrmgrp.o ../MIA-Proyecto1-201612174/obrmgrp.cpp
+
+obrmusr.o: ../MIA-Proyecto1-201612174/obrmusr.cpp ../MIA-Proyecto1-201612174/obrmusr.h \
+		../MIA-Proyecto1-201612174/structs.h \
+		../MIA-Proyecto1-201612174/obrm.h \
+		../MIA-Proyecto1-201612174/obtouch.h \
+		../MIA-Proyecto1-201612174/obedit.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obrmusr.o ../MIA-Proyecto1-201612174/obrmusr.cpp
+
+obtouch.o: ../MIA-Proyecto1-201612174/obtouch.cpp ../MIA-Proyecto1-201612174/obtouch.h \
+		../MIA-Proyecto1-201612174/structs.h \
+		../MIA-Proyecto1-201612174/obedit.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obtouch.o ../MIA-Proyecto1-201612174/obtouch.cpp
+
+obumount.o: ../MIA-Proyecto1-201612174/obumount.cpp ../MIA-Proyecto1-201612174/obumount.h \
+		../MIA-Proyecto1-201612174/structs.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obumount.o ../MIA-Proyecto1-201612174/obumount.cpp
 
 parser.o: ../MIA-Proyecto1-201612174/parser.cpp ../MIA-Proyecto1-201612174/scanner.h \
 		../MIA-Proyecto1-201612174/obmkdisk.h \

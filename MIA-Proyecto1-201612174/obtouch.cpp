@@ -17,7 +17,7 @@ obtouch::obtouch()
 }
 
 void obtouch::mostrardatos(obtouch *disco){
-     cout << "\n     ----COMANDO TOUCH----\n"<<endl;
+     cout << "\n     ----COMANDO MKFILE----\n"<<endl;
     string Ruta = EliminarComillas(disco->path);
     string CONT = "";
     int SIZE = 0;

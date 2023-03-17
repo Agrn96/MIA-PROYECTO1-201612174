@@ -140,7 +140,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 30 "parser.y"
+#line 48 "parser.y"
 
 //se especifican los tipo de valores para los no terminales y lo terminales
 //char TEXT [256];
@@ -148,11 +148,29 @@ union YYSTYPE
 char TEXT[256];
 
 class obmkdisk *mdisk;
+class obmrdisk *mrdisk;
 class obfdisk *fdisk;
 class obmount *montar;
+class obmkfs *mkfs;
+class obtouch *touch;
 class obrep *rep;
+class obmkdir *mkdir;
+class obcat *cat;
+class obren *ren;
 class obrm *rm;
+class obedit *edit;
 class obexec *exec;
+class obcp *copy;
+class obmv *mv;
+class obfind *find;
+class oblogin *login;
+class obmkgrp *mkgrp;
+class obrmgrp *rmgrp;
+class obmkusr *mkusr;
+class obrmusr *rmusr;
+class obchgrp *chgrp;
+class obrecovery *recovery;
+
 
 #line 176 "parser.h"
 

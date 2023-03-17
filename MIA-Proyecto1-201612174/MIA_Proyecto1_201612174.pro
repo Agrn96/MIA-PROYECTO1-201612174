@@ -16,11 +16,21 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
+        obedit.cpp \
         obexec.cpp \
         obfdisk.cpp \
+        oblogin.cpp \
         obmkdisk.cpp \
+        obmkfs.cpp \
+        obmkgrp.cpp \
+        obmkusr.cpp \
         obmount.cpp \
+        obrep.cpp \
         obrm.cpp \
+        obrmgrp.cpp \
+        obrmusr.cpp \
+        obtouch.cpp \
+        obumount.cpp \
         parser.cpp \
         scanner.cpp \
         structs.cpp
@@ -32,15 +42,28 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 DISTFILES += \
     CMakeLists.txt \
+    CMakeLists.txt.user \
+    MIA_Proyecto1_201612174.pro.user \
+    MIA_Proyecto1_201612174.pro.user.6dfc39a \
     lexico.l \
     parser.y
 
 HEADERS += \
+    obedit.h \
     obexec.h \
     obfdisk.h \
+    oblogin.h \
     obmkdisk.h \
+    obmkfs.h \
+    obmkgrp.h \
+    obmkusr.h \
     obmount.h \
+    obrep.h \
     obrm.h \
+    obrmgrp.h \
+    obrmusr.h \
+    obtouch.h \
+    obumount.h \
     parser.h \
     scanner.h \
     structs.h \
