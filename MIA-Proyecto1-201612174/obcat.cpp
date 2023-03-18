@@ -1,4 +1,4 @@
-#include "obrm.h"
+#include "obcat.h"
 #include "iostream"
 #include "list"
 #include "fstream"
@@ -11,15 +11,15 @@ static string RUTA_PARTITTION;
 extern structs::DiscosMontados Discos_Montados[99];
 extern structs::LOGIN USUARIO_ONLINE;
 
-obrm::obrm()
+obcat::obcat()
 {
 
 }
 
 
-void obrm::mostrardatos(obrm *disco){
+void obcat::mostrardatos(obcat *disco){
+     cout << "\n     ----COMANDO CAT----\n"<<endl;
 
-     cout << "\n     ----COMANDO RM----\n"<<endl;
     string id = USUARIO_ONLINE.id_particion;
     if(id == "-1"){
         cout << "NO HAY NINGUN USUARIO REGISTRADO"<<endl;
@@ -52,8 +52,10 @@ void obrm::mostrardatos(obrm *disco){
     cout<< "\n*RECUPERAR INFORMACION DE BLOQUE DE ARCHIVO*\n"<<endl;
     //return;
     //EMPIEZA EL FOR PARA BUSCAR TODAS LAS RUTAS
-
-        string Ruta = EliminarComillas(disco->path);
+    string RUTA_A = "";
+    for(string e: disco->path){
+        RUTA_A = e;
+        string Ruta = EliminarComillas(e);
         list<string> carpetas = separar_carpetas(Ruta);
         list<string>::iterator it;
         string NombreAr = NombreArchivo(Ruta);
@@ -77,7 +79,7 @@ void obrm::mostrardatos(obrm *disco){
                 for(int j = 0; j < 15; j++){
                     if(Inodo_actual.i_block[j] != -1){
                         contador_block =Inodo_actual.i_block[j];
-                        if( j  < 12 ){
+                        if(j < 12){
                             //BUSCAMOS BLOQUES DE CARPETAS
                             structs::BloquesdeCarpetas BloqueCarpeta_Actual;
                             getBlock_Carpets(&BloqueCarpeta_Actual, RUTA_PARTITTION, super.s_block_start + contador_block*sizeof(structs::BloquesdeCarpetas));
@@ -85,6 +87,7 @@ void obrm::mostrardatos(obrm *disco){
                             //NAVEGANDO ENTRE LOS ESPACIOS
                             for(int k = 0; k < 4; k++){
                                if(BloqueCarpeta_Actual.b_content[k].b_name == *it){
+
                                     contador_inodo = BloqueCarpeta_Actual.b_content[k].b_inodo;
                                     contador_block = Inodo_actual.i_block[j];
                                     Encontrelacarpeta = true;
@@ -103,7 +106,6 @@ void obrm::mostrardatos(obrm *disco){
                                     //cout << "BLOQUE APUNTADOR111 -> "<<B_A1.b_pointers[k]<<endl;
                                     contador_block = B_A1.b_pointers[k];
                                     for(int l = 0; l < 4; l++){
-
                                         if(BloqueCarpeta_Actual.b_content[l].b_name == *it){
                                             //cout << "ENCONTRE LA CARPETA CON EL NOMBRE"<< endl;
                                             contador_inodo = BloqueCarpeta_Actual.b_content[l].b_inodo;
@@ -139,17 +141,21 @@ void obrm::mostrardatos(obrm *disco){
                                                     break;
                                                 }
                                             }
+                                            if(Encontrelacarpeta){
+                                                break;
+                                            }
                                         }
                                     }
                                     if(Encontrelacarpeta){
                                         break;
                                     }
                                 }
-                                if(Encontrelacarpeta){
-                                    break;
-                                }
                             }
                         }
+
+
+
+
                     }
                     if(Encontrelacarpeta){
                         break;
@@ -162,175 +168,44 @@ void obrm::mostrardatos(obrm *disco){
             }
         }
         if(Encontrelacarpeta){
+            //VAMOS A RECUPERAR EL BLOQUE
+            getInodo(&Inodo_actual, RUTA_PARTITTION, super.s_inode_start + contador_inodo*sizeof(structs::TabladeInodos));
+            if(Inodo_actual.i_type == '1'){
+                cout << "** FILE : "<< e << endl;
+                for(int i = 0; i < 15; i++){
+                    if(Inodo_actual.i_block[i] != -1){
+                        structs::BloquesdeArchivos tmp_A;
+                        getBlock_Files(&tmp_A, RUTA_PARTITTION, super.s_block_start + Inodo_actual.i_block[i]*sizeof(structs::BloquesdeArchivos));
 
-            BuscarInodo(RUTA_PARTITTION, PART_START, contador_inodo);
-
-            structs::BloquesdeCarpetas BloqueCarpeta_Actual;
-            getBlock_Carpets(&BloqueCarpeta_Actual, RUTA_PARTITTION, super.s_block_start + contador_block*sizeof(structs::BloquesdeCarpetas));
-
-            int contador = 0;
-            for(int i = 0; i < 4; i++){
-                string nom(BloqueCarpeta_Actual.b_content[i].b_name);
-                if(NombreAr == nom){
-                    string n = "";
-                    strcpy(BloqueCarpeta_Actual.b_content[i].b_name , n.c_str());
-                    BloqueCarpeta_Actual.b_content[i].b_inodo = -1;
-                    contador=i;
-
-                    structs::BloquesdeCarpetas BloqueCarpeta_Nuevo;
-                    if(contador == 0){
-                        BloqueCarpeta_Nuevo.b_content[0] = BloqueCarpeta_Actual.b_content[1];
-                        BloqueCarpeta_Nuevo.b_content[1] = BloqueCarpeta_Actual.b_content[2];
-                        BloqueCarpeta_Nuevo.b_content[2] = BloqueCarpeta_Actual.b_content[3];
-                        BloqueCarpeta_Nuevo.b_content[3] = BloqueCarpeta_Actual.b_content[0];
+                        if(i<12){
+                            string n(tmp_A.b_content);
+                            cout<<n;
+                        }
                     }
-                    else if (contador == 1) {
-                        BloqueCarpeta_Nuevo.b_content[0] = BloqueCarpeta_Actual.b_content[0];
-                        BloqueCarpeta_Nuevo.b_content[1] = BloqueCarpeta_Actual.b_content[2];
-                        BloqueCarpeta_Nuevo.b_content[2] = BloqueCarpeta_Actual.b_content[3];
-                        BloqueCarpeta_Nuevo.b_content[3] = BloqueCarpeta_Actual.b_content[1];
-                    }
-                    else if (contador == 2) {
-                        BloqueCarpeta_Nuevo.b_content[0] = BloqueCarpeta_Actual.b_content[0];
-                        BloqueCarpeta_Nuevo.b_content[1] = BloqueCarpeta_Actual.b_content[1];
-                        BloqueCarpeta_Nuevo.b_content[2] = BloqueCarpeta_Actual.b_content[3];
-                        BloqueCarpeta_Nuevo.b_content[3] = BloqueCarpeta_Actual.b_content[2];
-                    }
-                    else if (contador == 3) {
-                        BloqueCarpeta_Nuevo.b_content[0] = BloqueCarpeta_Actual.b_content[0];
-                        BloqueCarpeta_Nuevo.b_content[1] = BloqueCarpeta_Actual.b_content[1];
-                        BloqueCarpeta_Nuevo.b_content[2] = BloqueCarpeta_Actual.b_content[2];
-                        BloqueCarpeta_Nuevo.b_content[3] = BloqueCarpeta_Actual.b_content[3];
-                    }
-
-                    //ELIMINAMOS LA REFERENCIA
-                    FILE *file = fopen(RUTA_PARTITTION.c_str(), "rb+");
-                    fseek(file, super.s_block_start+ contador_block*sizeof(structs::BloquesdeCarpetas), SEEK_SET);
-                    fwrite(&BloqueCarpeta_Nuevo, sizeof(structs::BloquesdeCarpetas), 1, file);
-                    fclose(file);
-                    cout << "SE ELIMINO EL INODO EXITOSAMENTE!! "<<endl;
-
-                    break;
                 }
-            }
-        }
-
-        if(super.s_filesystem_type == 3){
-            obtouch *touch = new obtouch();
-            string tipo_o = "rm";
-            touch->CrearJornaling(tipo_o, '0', Ruta, "", 0, RUTA_PARTITTION, PART_START);
-        }
-
-        return;
-
-
-
-}
-
-
-void obrm::BuscarInodo(string ruta, int inicio, int posicion){
-
-    structs::SuperBloque super;
-    getSuperBloque(&super, ruta, inicio);
-
-    structs::TabladeInodos Inodos;
-    getInodo(&Inodos, ruta, super.s_inode_start + posicion*sizeof(structs::TabladeInodos));
-
-
-    for(int i = 0; i < 15; i++){
-        if(Inodos.i_block[i] == -1){
-            for(int j = 0; j < 15-i; j++){
-
-            }
-            return;
-        }
-        else{
-            if(Inodos.i_type == '0'){
-                BorarBitmap(super, posicion, true);
-                BuscarBloque(ruta, inicio, Inodos.i_block[i], true, i);
+                cout << "\n--- PROCESO EXITOSAMENTE!! ---\n"<<endl;
             }
             else{
-                BorarBitmap(super, posicion, true);
-                BuscarBloque(ruta, inicio, Inodos.i_block[i], false, i);
+                cout << "\nEL ARCHIVO NO EXISTE! -> "<<Ruta << "\n"<< endl;
             }
 
         }
+
+    }
+    if(super.s_filesystem_type == 3){
+        obtouch *touch = new obtouch();
+        string tipo_o = "cat";
+        touch->CrearJornaling(tipo_o, '1', RUTA_A, "", 0, RUTA_PARTITTION, PART_START);
     }
 
     return;
+
+
+
 }
 
 
-void obrm::BuscarBloque(string ruta, int inicio, int posicion, bool tipo, int soycero){
-
-    structs::SuperBloque super;
-    getSuperBloque(&super, ruta, inicio);
-
-    if(tipo){
-        structs::BloquesdeCarpetas Bloque_carpeta;
-        getBlock_Carpets(&Bloque_carpeta, ruta, super.s_block_start + posicion*sizeof(structs::BloquesdeCarpetas));
-
-        if(soycero == 0){for(int i = 2; i < 4; i++){
-                if(Bloque_carpeta.b_content[i].b_inodo == -1){
-                    return;
-                }
-                else{
-                    BorarBitmap(super, posicion, false);
-                    BuscarInodo(ruta, inicio, Bloque_carpeta.b_content[i].b_inodo);
-                }
-            }
-        }
-        else{
-            for(int i = 0; i < 4; i++){
-                if(Bloque_carpeta.b_content[i].b_inodo == -1){
-                    return;
-                }
-                else{
-                    BorarBitmap(super, posicion, false);
-                    BuscarInodo(ruta, inicio, Bloque_carpeta.b_content[i].b_inodo);
-                }
-            }
-        }
-        return;
-
-    }
-    else{
-        BorarBitmap(super, posicion, false);
-        return;
-    }
-
-    return;
-}
-
-void obrm::BorarBitmap(structs::SuperBloque sp, int posicion, bool InodoBloque){
-
-    FILE *bfile = fopen(RUTA_PARTITTION.c_str(), "rb+");
-
-    if(InodoBloque){
-        sp.s_free_inodes_count +=1;
-        sp.s_firts_ino -= 1;
-        sp.s_umtime = time(0);
-        //ESCRIBIMOS EN EL BITMAP DE INODOS
-        fseek(bfile, sp.s_bm_inode_start+posicion-1, SEEK_SET);
-        fwrite("0", 1, 1, bfile);
-    }
-    else{
-        sp.s_free_blocks_count +=1;
-        sp.s_first_blo -= 1;
-        sp.s_umtime = time(0);
-        //ESCRIBIMOS EN EL BITMAP DE BLOQUES
-        fseek(bfile, sp.s_bm_block_start+posicion, SEEK_SET);
-        fwrite("0", 1, 1, bfile);
-    }
-
-    //ESCRIBIMOS EN EL SUPERBLOQUE
-    fseek(bfile, PART_START, SEEK_SET);
-    fwrite(&sp, sizeof(structs::SuperBloque), 1, bfile);
-    fclose(bfile);
-}
-
-
-string obrm::EliminarComillas(string cadena){
+string obcat::EliminarComillas(string cadena){
     string ruta;
     if(cadena[0] == '"'){
         for(int i = 1; i < cadena.size()-1; i++){ //ELIMINAR COMILLAS DE LA RUTA
@@ -342,7 +217,7 @@ string obrm::EliminarComillas(string cadena){
     return ruta;
 }
 
-void obrm::getSuperBloque(structs::SuperBloque *sp, string ruta, int part_Start){
+void obcat::getSuperBloque(structs::SuperBloque *sp, string ruta, int part_Start){
     structs::SuperBloque aux;
     FILE *archivo = fopen(ruta.c_str(), "rb+");
     fseek(archivo, part_Start , SEEK_SET);
@@ -351,7 +226,7 @@ void obrm::getSuperBloque(structs::SuperBloque *sp, string ruta, int part_Start)
     *sp = aux;
 }
 
-bool obrm::getInodo(structs::TabladeInodos*sp, string ruta, int part_Start){
+bool obcat::getInodo(structs::TabladeInodos*sp, string ruta, int part_Start){
     structs::TabladeInodos aux;
     FILE *file = fopen(ruta.c_str(), "rb+");
     if (file != NULL){
@@ -365,7 +240,7 @@ bool obrm::getInodo(structs::TabladeInodos*sp, string ruta, int part_Start){
     fclose(file);
     return true;
 }
-bool obrm::getBlock_Files(structs::BloquesdeArchivos *sp, string ruta, int part_Start){
+bool obcat::getBlock_Files(structs::BloquesdeArchivos *sp, string ruta, int part_Start){
     structs::BloquesdeArchivos aux;
     FILE *file = fopen(ruta.c_str(), "rb+");
     if (file != NULL){
@@ -379,7 +254,7 @@ bool obrm::getBlock_Files(structs::BloquesdeArchivos *sp, string ruta, int part_
     fclose(file);
     return true;
 }
-bool obrm::getBlock_Carpets(structs::BloquesdeCarpetas *sp, string ruta, int part_Start){
+bool obcat::getBlock_Carpets(structs::BloquesdeCarpetas *sp, string ruta, int part_Start){
     structs::BloquesdeCarpetas aux;
     FILE *file = fopen(ruta.c_str(), "rb+");
     if (file != NULL){
@@ -393,7 +268,7 @@ bool obrm::getBlock_Carpets(structs::BloquesdeCarpetas *sp, string ruta, int par
     fclose(file);
     return true;
 }
-bool obrm::getBlock_Apuntador(structs::BloquesdeApuntadores *sp, string ruta, int part_Start){
+bool obcat::getBlock_Apuntador(structs::BloquesdeApuntadores *sp, string ruta, int part_Start){
     structs::BloquesdeApuntadores aux;
     FILE *file = fopen(ruta.c_str(), "rb+");
     if (file != NULL){
@@ -408,7 +283,7 @@ bool obrm::getBlock_Apuntador(structs::BloquesdeApuntadores *sp, string ruta, in
     return true;
 }
 
-string obrm::NombreArchivo(string path){
+string obcat::NombreArchivo(string path){
     int contador = 0;
     string cadena = "";
     for(int i = path.length()-1; i >= 0; i--){
@@ -426,7 +301,7 @@ string obrm::NombreArchivo(string path){
     return cadena;
 }
 
-list<string> obrm::separar_carpetas(string path) {
+list<string> obcat::separar_carpetas(string path) {
     if (path[0] == '/') {
         path = path.substr(1, path.length());
     }
@@ -446,7 +321,7 @@ list<string> obrm::separar_carpetas(string path) {
     return lista_carpetas;
 }
 
-bool obrm::existelaparticionmontada(structs::DiscosMontados tmp[], string codigo, string *ruta, string *nombre, int *start_particion, int *size_particion){
+bool obcat::existelaparticionmontada(structs::DiscosMontados tmp[], string codigo, string *ruta, string *nombre, int *start_particion, int *size_particion){
     for(int i = 0; i < 26; i++){
         if(tmp[i].status == 1){
             for(int j = 0; j < 99; j++){
@@ -493,7 +368,7 @@ bool obrm::existelaparticionmontada(structs::DiscosMontados tmp[], string codigo
     return false;
 }
 
-bool obrm::ExisteMBR(string ruta, structs::MBR *mbr){
+bool obcat::ExisteMBR(string ruta, structs::MBR *mbr){
     structs::MBR tmp_disco;
     FILE *file = fopen(ruta.c_str(), "rb+");
     if (file != NULL){
@@ -508,7 +383,7 @@ bool obrm::ExisteMBR(string ruta, structs::MBR *mbr){
     return true;
 }
 
-bool obrm::ExisteNombre(structs::MBR tmp_MBR, string name, int *Ext, int *start_part, int *size_part){
+bool obcat::ExisteNombre(structs::MBR tmp_MBR, string name, int *Ext, int *start_part, int *size_part){
     *Ext = 0;
     ////cout<<"primera busqueda"<<endl;
     for(int i = 0; i<4; i++){
@@ -526,7 +401,7 @@ bool obrm::ExisteNombre(structs::MBR tmp_MBR, string name, int *Ext, int *start_
     return true;
 }
 
-bool obrm::ExisteNombreLogica(string ruta, string name, int part_start_ext, int *start_part, int *size_part){
+bool obcat::ExisteNombreLogica(string ruta, string name, int part_start_ext, int *start_part, int *size_part){
     ////cout<<"busque logica "<< part_start_ext <<endl;
     bool ExisteSiguiente = true;
     int contador = 0;
