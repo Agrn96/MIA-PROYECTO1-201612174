@@ -16,15 +16,25 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
+        obcat.cpp \
+        obchgrp.cpp \
+        obcp.cpp \
         obedit.cpp \
         obexec.cpp \
         obfdisk.cpp \
+        obfind.cpp \
         oblogin.cpp \
+        obloss.cpp \
+        obmkdir.cpp \
         obmkdisk.cpp \
         obmkfs.cpp \
         obmkgrp.cpp \
         obmkusr.cpp \
         obmount.cpp \
+        obmrdisk.cpp \
+        obmv.cpp \
+        obrecovery.cpp \
+        obren.cpp \
         obrep.cpp \
         obrm.cpp \
         obrmgrp.cpp \
@@ -44,20 +54,29 @@ DISTFILES += \
     CMakeLists.txt \
     CMakeLists.txt.user \
     MIA_Proyecto1_201612174.pro.user \
-    MIA_Proyecto1_201612174.pro.user.6dfc39a \
     lexico.l \
     parser.y
 
 HEADERS += \
+    obcat.h \
+    obchgrp.h \
+    obcp.h \
     obedit.h \
     obexec.h \
     obfdisk.h \
+    obfind.h \
     oblogin.h \
+    obloss.h \
+    obmkdir.h \
     obmkdisk.h \
     obmkfs.h \
     obmkgrp.h \
     obmkusr.h \
     obmount.h \
+    obmrdisk.h \
+    obmv.h \
+    obrecovery.h \
+    obren.h \
     obrep.h \
     obrm.h \
     obrmgrp.h \

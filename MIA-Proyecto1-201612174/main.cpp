@@ -39,11 +39,11 @@ int main(int argc, char *argv[])
 
                 if(yyparse()==0) // Si nos da un número negativo, signifca error.
                 {
-                    printf("\n\nComando ejecutado correctamente\n\n");
+                    printf("\n\Comando ejecutado correctamente\n\n");
 
                 }else {
 
-                    printf("\n\nNo se pudo ejecutar el comando\n\n");
+                    printf("\n\No se pudo ejecutar el comando\n\n");
                 }
 
             }
